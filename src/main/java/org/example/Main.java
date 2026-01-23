@@ -3,27 +3,29 @@ package org.example;
 import JASONES.scripts.LeerJS;
 
 public class Main {
-    // Agregamos String[] args para que sea un método main ejecutable estándar
     public static void main(String[] args) {
-        try {
-            // 1. Validar conexión
-            org.example.ConnectionBBDD.getConnectionMongo();
-            System.out.println("Conexión correcta a MongoDB.");
+        LeerJS procesador = new LeerJS();
+        Alumno alumnoRepo = new Alumno();
 
-            // 2. Instanciar el lector de JSON
-            LeerJS lector = new LeerJS();
+        System.out.println("--- INICIANDO CRUD COMPLETO ---");
 
-            // 3. Ejecutar la lectura e inserción
-            System.out.println("Iniciando carga de datos desde JSON...");
-            lector.procesarEInsertarAlumnos();
+        // 1. CREATE: Insertar datos desde el JSON
+        System.out.println("\n[1] Operación CREATE:");
+        procesador.cargarTodoElJson();
 
-            // 4. Listar resultados finales
-            System.out.println("\nEstado final de la base de datos:");
-            Alumno alumno = new Alumno();
-            alumno.listarAlumnos();
+        // 2. READ: Listar los alumnos actuales
+        System.out.println("\n[2] Operación READ:");
+        alumnoRepo.listarAlumnos();
 
-        } catch (Exception e) {
-            System.out.println("Error en la ejecución: " + e.getMessage());
-        }
+        // 3. UPDATE: Actualizar un registro específico
+        // Supongamos que queremos cambiar el nombre de un empleado que leímos
+        System.out.println("\n[3] Operación UPDATE:");
+        procesador.actualizarDesdeJson(1000, "Geneva Modificada");
+
+        // 4. DELETE: Borrar un registro
+        System.out.println("\n[4] Operación DELETE:");
+        procesador.borrarSegunJson("Geneva Modificada");
+
+        System.out.println("\n--- CRUD FINALIZADO ---");
     }
 }
