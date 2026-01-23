@@ -1,3 +1,4 @@
+//Todo lo que es Alumno es Empleado....
 package org.example;
 
 import com.mongodb.client.MongoCollection;
@@ -9,7 +10,7 @@ import org.bson.Document;
 public class Alumno {
 
     private MongoCollection<Document> getCollection() {
-        return org.example.ConnectionBBDD.getConnectionMongo().getCollection("Alumnos");
+        return org.example.ConnectionBBDD.getConnectionMongo().getCollection("Empleados");
     }
 
     // 1. LISTAR ALUMNOS

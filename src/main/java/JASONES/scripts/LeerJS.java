@@ -1,44 +1,40 @@
 package JASONES.scripts;
 
 import com.google.gson.*;
+import org.example.Alumno; // Importamos la clase Alumno
 import java.io.FileReader;
 
 public class LeerJS {
 
-    public static void main(String[] args) {
+    public void procesarEInsertarAlumnos() {
+        Alumno alumnoCRUD = new Alumno(); // Instancia para usar los métodos de MongoDB
 
         try {
             Gson gson = new Gson();
-            // Aquí ocurre la deserialización: el archivo JSON se transforma en un objeto manejable desde Java.
-            JsonObject cliente = gson.fromJson(
-                    new FileReader("cliente.json"), JsonObject.class
+            JsonArray listaEmpleados = gson.fromJson(
+                    new FileReader("data/Empleados.json"), JsonArray.class
             );
-            // valores tipo enteros
-            int id = cliente.get("id").getAsInt();
-            int edad = cliente.get("edad").getAsInt();
 
-// valores tipo string
-            String nombre = cliente.get("nombre").getAsString();
-            String email = cliente.get("email").getAsString();
+            for (JsonElement elemento : listaEmpleados) {
+                JsonObject emp = elemento.getAsJsonObject();
 
-// valores tipo boolean
-            boolean activo = cliente.get("activo").getAsBoolean();
-            double saldo = cliente.get("saldo").getAsDouble();
+                // Extraemos los datos del JSON
+                String nombre = emp.get("nombre").getAsString();
+                int edad = emp.get("edad").getAsInt();
 
-// valores tipo Array
-            JsonArray telefonos = cliente.getAsJsonArray("telefonos");
+                // Como el JSON no tiene dos apellidos, usaremos valores por defecto
+                // o dividiremos el nombre si fuera necesario.
+                String apellido1 = "Desconocido";
+                String apellido2 = "-";
 
-// Se recorre para ver sus valores simples
-            for (JsonElement t : telefonos) {
-                System.out.println("- " + t.getAsString());
+                // Llamamos al método que ya tienes en Alumno.java
+                alumnoCRUD.insertAlumno(nombre, apellido1, apellido2, edad);
+
+                System.out.println("Insertado desde JSON: " + nombre);
             }
 
-// Cuando un campo contiene otro objeto, se accede con getAsJsonObject y luego se leen sus valores internos
-            JsonObject direccion = cliente.getAsJsonObject("direccion");
-            String ciudad = direccion.get("ciudad").getAsString();
-            String cp = direccion.get("cp").getAsString();
         } catch (Exception e) {
-            e.printStackTrace();
+            System.err.println("Error al procesar el JSON: " + e.getMessage());
         }
     }
 }

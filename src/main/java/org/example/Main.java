@@ -1,22 +1,29 @@
 package org.example;
 
-public class Main {
-    static void main() {
-        try {
-            org.example.ConnectionBBDD.getConnectionMongo();
-            System.out.println("Conexión correcta a PostgreSQL.");
-        } catch (Exception e) {
-            System.out.println("Error: " + e.getMessage());
-        }
-        Alumno alumno = new Alumno();
+import JASONES.scripts.LeerJS;
 
-        // Llama al metodo para ver los alumnos
-        alumno.listarAlumnos();
-        // Insertar org.example.Alumno
-        //alumno.insertAlumno("ana", "Vázquez", "Guerrero", 25);
-        // Actualizar org.example.Alumno
-        //alumno.actualizarAlumno("Mónica", "Mónica", "Blásquez", "Güera", 20);
-        // Borrar org.example.Alumno
-        //alumno.deleteByName("ana");
+public class Main {
+    // Agregamos String[] args para que sea un método main ejecutable estándar
+    public static void main(String[] args) {
+        try {
+            // 1. Validar conexión
+            org.example.ConnectionBBDD.getConnectionMongo();
+            System.out.println("Conexión correcta a MongoDB.");
+
+            // 2. Instanciar el lector de JSON
+            LeerJS lector = new LeerJS();
+
+            // 3. Ejecutar la lectura e inserción
+            System.out.println("Iniciando carga de datos desde JSON...");
+            lector.procesarEInsertarAlumnos();
+
+            // 4. Listar resultados finales
+            System.out.println("\nEstado final de la base de datos:");
+            Alumno alumno = new Alumno();
+            alumno.listarAlumnos();
+
+        } catch (Exception e) {
+            System.out.println("Error en la ejecución: " + e.getMessage());
+        }
     }
 }

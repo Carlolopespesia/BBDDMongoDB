@@ -7,7 +7,7 @@ import com.mongodb.client.MongoDatabase;
 public class ConnectionBBDD {
     // MONGODB la conexión y la base de datos
     private static final String URL_MONGO = "mongodb://localhost:27017";
-    private static final String DB_NAME = "Clase";
+    private static final String DB_NAME = "CineLoko";
 
     public static MongoDatabase getConnectionMongo() {
         try{
